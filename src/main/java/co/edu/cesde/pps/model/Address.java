@@ -31,6 +31,7 @@ import java.util.Objects;
  * - 1:N con Order (como shipping_address_id o billing_address_id)
  */
 
+
 @Entity
 @Table(name = "Addres")
 @Getter
@@ -46,7 +47,8 @@ public class Address {
     @Column(name = "address_id")
     private Long addressId;
 
-    @Column(name = "user_id")
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     @Enumerated(EnumType.STRING)
