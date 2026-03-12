@@ -47,7 +47,8 @@ public class Product {
     @Column(name = "product_id")
     private Long productId;
 
-    @Column(name = "category_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
     @Column(name = "sku")

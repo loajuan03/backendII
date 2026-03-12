@@ -86,10 +86,12 @@ public class Cart {
     @Column(name = "cart_id")
     private Long cartId;
 
-    @Column(name = "user_id")
-    private User user; // Nullable - NULL para invitados
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    @Column(name = "session_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "session_id", nullable = false)
     private UserSession session;
 
     @Column(name = "status")
@@ -98,11 +100,12 @@ public class Cart {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @Column(name = "update_at")
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    // Colección para relación 1:N
-    private List<CartItem> items;
+    @OneToMany(mappedBy = "cart", fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<CartItem> items = new ArrayList<>();
 
 
 

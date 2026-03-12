@@ -63,8 +63,9 @@ public class Order {
     @Column(name = "order_number")
     private String orderNumber;
 
-    @Column(name = "user_id")
-    private Long userId; // NOT NULL - checkout requiere usuario registrado
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @Column(name = "order_status_id")
     private Long orderStatusId;

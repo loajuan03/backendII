@@ -44,7 +44,8 @@ public class Category {
     @Column(name = "category_id")
     private Long categoryId;
 
-    @Column(name = "parent_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id")
     private Category parent; // Nullable - NULL para categorías raíz
 
     @Column(name = "name")
@@ -54,11 +55,13 @@ public class Category {
     private String slug;
 
     // Colecciones para relaciones 1:N
+    @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY)
     @Builder.Default
-    private List<Category> subcategories;
+    private List<Category> subcategories = new ArrayList<>();
 
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     @Builder.Default
-    private List<Product> products;
+    private List<Product> products = new ArrayList<>();
 
 
 
