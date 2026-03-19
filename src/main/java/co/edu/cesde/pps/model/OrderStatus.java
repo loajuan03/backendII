@@ -24,8 +24,6 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
-
 public class OrderStatus {
 
     @Id
@@ -38,13 +36,6 @@ public class OrderStatus {
 
     @Column(name = "description", length = 255)
     private String description;
-
-
-    // Constructor con campos obligatorios
-
-
-    // Getters y Setters
-
 
     // equals y hashCode basados en ID
 
@@ -61,7 +52,7 @@ public class OrderStatus {
         return Objects.hash(orderStatusId);
     }
 
-    // toString sin navegación a objetos relacionados
+    // toString personalizado sin navegación a objetos relacionados
 
     @Override
     public String toString() {

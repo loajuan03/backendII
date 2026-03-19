@@ -2,6 +2,7 @@ package co.edu.cesde.pps.model;
 
 import co.edu.cesde.pps.enums.CartStatus;
 import co.edu.cesde.pps.util.CalculationUtils;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -72,13 +73,12 @@ import java.util.stream.Collectors;
  * a la capa de servicio (CartService) en etapa 05 para mantener el modelo limpio.
  */
 @Entity
-@Table(name = "cart")
+@Table(name = "carts")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
 public class Cart {
 
     @Id
@@ -88,49 +88,29 @@ public class Cart {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user;
+    private User user; // Nullable - NULL para invitados
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "session_id", nullable = false)
+    @JoinColumn(name = "session_id")
     private UserSession session;
 
-    @Column(name = "status")
-    private CartStatus status;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    @Builder.Default
+    private CartStatus status = CartStatus.OPEN;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    @Column(name = "created_at", nullable = false, updatable = false)
+    @Builder.Default
+    private LocalDateTime createdAt = LocalDateTime.now();
 
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    @Column(name = "updated_at", nullable = false)
+    @Builder.Default
+    private LocalDateTime updatedAt = LocalDateTime.now();
 
     @OneToMany(mappedBy = "cart", fetch = FetchType.LAZY)
+    @JsonManagedReference("cart-items")
     @Builder.Default
     private List<CartItem> items = new ArrayList<>();
-
-
-
-    // Constructor para carrito de invitado
-    public Cart(UserSession session) {
-        this.user = null; // Invitado
-        this.session = session;
-        this.status = CartStatus.OPEN;
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
-        this.items = new ArrayList<>();
-    }
-
-    // Constructor para carrito de usuario registrado
-    public Cart(User user, UserSession session) {
-        this.user = user;
-        this.session = session;
-        this.status = CartStatus.OPEN;
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
-        this.items = new ArrayList<>();
-    }
-
-    // Getters y Setters
-
 
     // Métodos helper de consulta (sin efectos secundarios)
 
@@ -154,8 +134,8 @@ public class Cart {
      */
     public BigDecimal calculateTotal() {
         List<BigDecimal> subtotals = items.stream()
-            .map(CartItem::calculateSubtotal)
-            .collect(Collectors.toList());
+                .map(CartItem::calculateSubtotal)
+                .collect(Collectors.toList());
         return CalculationUtils.calculateCartTotal(subtotals);
     }
 
@@ -173,22 +153,4 @@ public class Cart {
     public int hashCode() {
         return Objects.hash(cartId);
     }
-
-    // toString sin navegación a objetos relacionados (solo IDs y tamaño de colección)
-
-   /** @Override
-    public String toString() {
-        return "Cart{" +
-                "cartId=" + cartId +
-                ", userId=" + (user != null ? user.getUserId() : null) +
-                ", sessionId=" + (session != null ? session.getSessionId() : null) +
-                ", status=" + status +
-                ", isGuest=" + isGuestCart() +
-                ", isOpen=" + isOpen() +
-                ", itemsCount=" + (items != null ? items.size() : 0) +
-                ", total=" + calculateTotal() +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
-    }*/
 }

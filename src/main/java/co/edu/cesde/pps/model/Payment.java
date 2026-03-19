@@ -40,13 +40,12 @@ import java.util.Objects;
  * - N:1 con PaymentStatus (muchos pagos tienen un estado)
  */
 @Entity
-@Table(name = "payment")
+@Table(name = "payments")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
 public class Payment {
 
     @Id
@@ -54,49 +53,38 @@ public class Payment {
     @Column(name = "payment_id")
     private Long paymentId;
 
-    @Column(name = "order_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
-    @Column(name = "payment_method_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "payment_method_id", nullable = false)
     private PaymentMethod paymentMethod;
 
-    @Column(name = "payment_status_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "payment_status_id", nullable = false)
     private PaymentStatus paymentStatus;
 
-    @Column(name = "amount")
+    @Column(name = "amount", nullable = false, precision = 10, scale = 2)
     private BigDecimal amount;
 
-    @Column(name = "currency")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "currency", nullable = false)
     private Currency currency;
 
-    @Column(name = "provider_reference")
+    @Column(name = "provider_reference", length = 255)
     private String providerReference;
 
     @Column(name = "paid_at")
     private LocalDateTime paidAt;
 
+    // Setter personalizado con validación (override de Lombok)
 
-    // Constructor con campos obligatorios (paidAt NULL para pending)
-    public Payment(Order order, PaymentMethod paymentMethod, PaymentStatus paymentStatus,
-                   BigDecimal amount, Currency currency) {
-        this.order = order;
-        this.paymentMethod = paymentMethod;
-        this.paymentStatus = paymentStatus;
-        this.amount = amount;
-        this.currency = currency;
-        this.paidAt = null; // Se establece cuando el pago se completa
-    }
-
-    // Constructor completo (excepto ID autogenerado)
-
-
-    // Getters y Setters
     public void setAmount(BigDecimal amount) {
         // Validación: amount puede ser negativo (reembolsos), pero no null
         ValidationUtils.validateNotNull(amount, "amount");
         this.amount = amount;
     }
-
 
     // Método helper para verificar si el pago está completado
     public boolean isPaid() {
@@ -123,21 +111,4 @@ public class Payment {
         return Objects.hash(paymentId);
     }
 
-    // toString sin navegación a objetos relacionados (solo IDs)
-/*
-    @Override
-    public String toString() {
-        return "Payment{" +
-                "paymentId=" + paymentId +
-                ", orderId=" + (order != null ? order.getOrderId() : null) +
-                ", paymentMethodId=" + (paymentMethod != null ? paymentMethod.getPaymentMethodId() : null) +
-                ", paymentStatusId=" + (paymentStatus != null ? paymentStatus.getPaymentStatusId() : null) +
-                ", amount=" + amount +
-                ", currency=" + currency +
-                ", providerReference='" + providerReference + '\'' +
-                ", paidAt=" + paidAt +
-                ", isPaid=" + isPaid() +
-                ", isRefund=" + isRefund() +
-                '}';
-    }*/
 }

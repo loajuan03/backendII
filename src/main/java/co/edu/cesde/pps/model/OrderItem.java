@@ -2,6 +2,7 @@ package co.edu.cesde.pps.model;
 
 import co.edu.cesde.pps.util.CalculationUtils;
 import co.edu.cesde.pps.util.ValidationUtils;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -40,13 +41,15 @@ import java.util.Objects;
  * - N:1 con Product (muchos items referencian a un producto)
  */
 @Entity
-@Table(name = "order_item")
+@Table(name = "order_items",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"order_id", "product_id"})
+        })
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
 public class OrderItem {
 
     @Id
@@ -54,37 +57,25 @@ public class OrderItem {
     @Column(name = "order_item_id")
     private Long orderItemId;
 
-    @Column(name = "order_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id", nullable = false)
+    @JsonBackReference("order-items")
     private Order order;
 
-    @Column(name = "product_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    @Column(name = "quantity")
+    @Column(name = "quantity", nullable = false)
     private Integer quantity;
 
-    @Column(name = "unit_price")
+    @Column(name = "unit_price", nullable = false, precision = 10, scale = 2)
     private BigDecimal unitPrice;
 
-    @Column(name = "line_total")
+    @Column(name = "line_total", nullable = false, precision = 10, scale = 2)
     private BigDecimal lineTotal;
 
-
-
-    // Constructor con campos obligatorios (lineTotal se calcula)
-    public OrderItem(Order order, Product product, Integer quantity, BigDecimal unitPrice) {
-        this.order = order;
-        this.product = product;
-        this.quantity = quantity;
-        this.unitPrice = unitPrice;
-        this.lineTotal = calculateLineTotal();
-    }
-
-    // Constructor completo (excepto ID autogenerado)
-
-
-    // Getters y Setters
-
+    // Setters personalizados con validación (override de Lombok)
 
     public void setQuantity(Integer quantity) {
         ValidationUtils.validatePositive(quantity, "quantity");
@@ -105,7 +96,6 @@ public class OrderItem {
         this.lineTotal = lineTotal;
     }
 
-
     // Método helper para calcular total de la línea
     public BigDecimal calculateLineTotal() {
         return CalculationUtils.calculateOrderItemLineTotal(unitPrice, quantity);
@@ -125,18 +115,4 @@ public class OrderItem {
     public int hashCode() {
         return Objects.hash(orderItemId);
     }
-
-    // toString sin navegación a objetos relacionados (solo IDs)
-/*
-    @Override
-    public String toString() {
-        return "OrderItem{" +
-                "orderItemId=" + orderItemId +
-                ", orderId=" + (order != null ? order.getOrderId() : null) +
-                ", productId=" + (product != null ? product.getProductId() : null) +
-                ", quantity=" + quantity +
-                ", unitPrice=" + unitPrice +
-                ", lineTotal=" + lineTotal +
-                '}';
-    }*/
 }

@@ -18,13 +18,12 @@ import java.util.Objects;
  * - 1:N con Payment (un método puede usarse en múltiples pagos)
  */
 @Entity
-@Table(name = "payment_method")
+@Table(name = "payment_methods")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
 public class PaymentMethod {
 
     @Id
@@ -32,18 +31,11 @@ public class PaymentMethod {
     @Column(name = "payment_method_id")
     private Long paymentMethodId;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false, unique = true, length = 50)
     private String name;
 
-
-
-    // Constructor con campos obligatorios
-    public PaymentMethod(String name) {
-        this.name = name;
-    }
-
-    // Getters y Setters
-
+    @Column(name = "description", length = 255)
+    private String description;
 
     // equals y hashCode basados en ID
 
@@ -59,14 +51,4 @@ public class PaymentMethod {
     public int hashCode() {
         return Objects.hash(paymentMethodId);
     }
-
-    // toString sin navegación a objetos relacionados
-/*
-    @Override
-    public String toString() {
-        return "PaymentMethod{" +
-                "paymentMethodId=" + paymentMethodId +
-                ", name='" + name + '\'' +
-                '}';
-    }*/
 }

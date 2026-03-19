@@ -33,13 +33,12 @@ import java.util.Objects;
  * - 1:N con OrderItem (un producto puede estar en múltiples órdenes)
  */
 @Entity
-@Table(name = "product")
+@Table(name = "products")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
 public class Product {
 
     @Id
@@ -51,46 +50,40 @@ public class Product {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    @Column(name = "sku")
+    @Column(name = "sku", nullable = false, unique = true, length = 50)
     private String sku;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false, length = 255)
     private String name;
 
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "price")
+    @Column(name = "price", nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
 
-    @Column(name = "stock_qty")
+    @Column(name = "stock_qty", nullable = false)
     private Integer stockQty;
 
-    @Column(name = "is_active")
-    private Boolean isActive;
+    @Column(name = "is_active", nullable = false)
+    @Builder.Default
+    private Boolean isActive = true;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    @Column(name = "created_at", nullable = false, updatable = false)
+    @Builder.Default
+    private LocalDateTime createdAt = LocalDateTime.now();
 
-    // Constructor vacío (requerido para JPA futuro)
+    // Setters personalizados con validación (override de Lombok)
 
-
-    // Constructor con campos obligatorios
-    public Product(Category category, String sku, String name, BigDecimal price, Integer stockQty) {
-        this.category = category;
-        this.sku = sku;
-        this.name = name;
+    public void setPrice(BigDecimal price) {
+        ValidationUtils.validateNonNegative(price, "price");
         this.price = price;
-        this.stockQty = stockQty;
-        this.isActive = true; // Por defecto activo
-        this.createdAt = LocalDateTime.now();
     }
 
-    // Constructor completo (excepto ID y timestamp autogenerados)
-
-
-    // Getters y Setters
-
+    public void setStockQty(Integer stockQty) {
+        ValidationUtils.validateNonNegative(stockQty, "stockQty");
+        this.stockQty = stockQty;
+    }
 
     // Método helper para verificar disponibilidad
     public boolean isAvailable() {
@@ -111,6 +104,8 @@ public class Product {
     public int hashCode() {
         return Objects.hash(productId);
     }
+
+    // toString personalizado sin navegación a objetos relacionados (solo IDs)
 
     // toString sin navegación a objetos relacionados (solo IDs)
 /*

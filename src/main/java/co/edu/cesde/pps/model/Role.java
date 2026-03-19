@@ -19,41 +19,24 @@ import java.util.Objects;
  * - 1:N con User (un rol puede tener múltiples usuarios)
  */
 @Entity
-@Table(name = "role")
+@Table(name = "roles")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
 public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "role_id", nullable = false)
-    private Role roleId;
+    @Column(name = "role_id")
+    private Long roleId;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false, unique = true, length = 50)
     private String name;
 
-    @Column(name = "description")
+    @Column(name = "description", length = 255)
     private String description;
-
-    // Constructor vacío (requerido para JPA futuro)
-
-
-    // Constructor con campos obligatorios
-    public Role(String name) {
-        this.name = name;
-    }
-
-    // Constructor completo (excepto ID autogenerado)
-
-
-    // Getters y Setters
-
-
 
     // equals y hashCode basados en ID
 
@@ -69,7 +52,6 @@ public class Role {
     public int hashCode() {
         return Objects.hash(roleId);
     }
-
     // toString sin navegación a objetos relacionados
 /*
     @Override
