@@ -6,6 +6,12 @@ import co.edu.cesde.pps.exception.EntityNotFoundException;
 import co.edu.cesde.pps.exception.ValidationException;
 import co.edu.cesde.pps.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +29,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/products")
-@Tag(name = "Products", description = "Operaciones para gestionar productos del catalogo")
+@Tag(
+        name = "Productos",
+        description = "Endpoints publicos para consultar el catalogo de productos"
+)
 public class ProductController {
 
     private final ProductService productService;
@@ -32,7 +41,25 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @Operation(summary = "Listar productos", description = "Permite listar todos los productos, filtrar activos, buscar por categoria o buscar por nombre.")
+    @Operation(
+            summary = "Listar productos activos",
+            description = "Retorna todos los productos activos disponibles en el catalogo"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Lista de productos obtenida correctamente",
+                    content = @Content(
+                            mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = ProductDTO.class))
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Error interno del servidor",
+                    content = @Content
+            )
+    })
     @GetMapping
     public ResponseEntity<List<ProductDTO>> getProducts(
             @RequestParam(required = false) Long categoryId,
@@ -54,9 +81,34 @@ public class ProductController {
         return ResponseEntity.ok(productService.findAllProducts());
     }
 
-    @Operation(summary = "Obtener un producto por ID")
+    @Operation(
+            summary = "Obtener producto por ID",
+            description = "Retorna el detalle de un producto especifico. Si no existe, responde 404"
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Producto encontrado",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ProductDTO.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Producto no encontrado",
+                    content = @Content
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Error interno del servidor",
+                    content = @Content
+            )
+    })
     @GetMapping("/{id}")
-    public ResponseEntity<ProductDTO> getProduct(@PathVariable Long id) {
+    public ResponseEntity<ProductDTO> getProduct(
+            @Parameter(description = "ID del producto a consultar", example = "1")
+            @PathVariable Long id) {
         return ResponseEntity.ok(productService.findById(id));
     }
 
