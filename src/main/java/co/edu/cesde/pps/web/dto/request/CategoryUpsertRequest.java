@@ -1,4 +1,6 @@
 package co.edu.cesde.pps.web.dto.request;
 
-public record CategoryUpsertRequest(Long parentId, String name, String slug) {
+import jakarta.validation.constraints.NotBlank;
+
+public record CategoryUpsertRequest(Long parentId, @NotBlank String name, String slug) {
 }

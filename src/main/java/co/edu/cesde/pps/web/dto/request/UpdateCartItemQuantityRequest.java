@@ -1,4 +1,7 @@
 package co.edu.cesde.pps.web.dto.request;
 
-public record UpdateCartItemQuantityRequest(Integer quantity) {
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
+public record UpdateCartItemQuantityRequest(@NotNull @Positive Integer quantity) {
 }

@@ -1,4 +1,6 @@
 package co.edu.cesde.pps.web.dto.request;
 
-public record MergeCartRequest(Long guestCartId) {
+import jakarta.validation.constraints.NotNull;
+
+public record MergeCartRequest(@NotNull Long guestCartId) {
 }

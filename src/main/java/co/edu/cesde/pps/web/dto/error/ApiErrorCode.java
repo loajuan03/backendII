@@ -8,5 +8,6 @@ public enum ApiErrorCode {
     INVALID_CART_STATE,
     CART_MERGE_ERROR,
     UNAUTHORIZED,
+    FORBIDDEN,
     INTERNAL_SERVER_ERROR
 }
