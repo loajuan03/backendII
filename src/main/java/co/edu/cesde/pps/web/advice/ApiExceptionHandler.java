@@ -1,6 +1,7 @@
 package co.edu.cesde.pps.web.advice;
 
 import co.edu.cesde.pps.exception.AuthenticationException;
+import co.edu.cesde.pps.exception.AuthorizationException;
 import co.edu.cesde.pps.exception.ValidationException;
 import co.edu.cesde.pps.web.dto.error.ApiErrorCode;
 import co.edu.cesde.pps.web.dto.error.ApiErrorResponse;
@@ -47,6 +48,13 @@ public class ApiExceptionHandler {
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<ApiErrorResponse> handleAuthentication(
             AuthenticationException ex,
+            HttpServletRequest req) {
+        return buildErrorResponse(ex, req);
+    }
+
+    @ExceptionHandler(AuthorizationException.class)
+    public ResponseEntity<ApiErrorResponse> handleAuthorization(
+            AuthorizationException ex,
             HttpServletRequest req) {
         return buildErrorResponse(ex, req);
     }

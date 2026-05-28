@@ -3,7 +3,7 @@ package co.edu.cesde.pps.web.controller;
 import co.edu.cesde.pps.application.CatalogApplicationService;
 import co.edu.cesde.pps.web.dto.request.ProductUpsertRequest;
 import co.edu.cesde.pps.web.dto.response.ProductResponse;
-import co.edu.cesde.pps.web.security.CurrentSessionResolver;
+import co.edu.cesde.pps.web.security.AdminAccessGuard;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -22,19 +22,19 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminProductController {
 
     private final CatalogApplicationService catalogApplicationService;
-    private final CurrentSessionResolver currentSessionResolver;
+    private final AdminAccessGuard adminAccessGuard;
 
     public AdminProductController(CatalogApplicationService catalogApplicationService,
-                                  CurrentSessionResolver currentSessionResolver) {
+                                  AdminAccessGuard adminAccessGuard) {
         this.catalogApplicationService = catalogApplicationService;
-        this.currentSessionResolver = currentSessionResolver;
+        this.adminAccessGuard = adminAccessGuard;
     }
 
     @PostMapping
     public ResponseEntity<ProductResponse> createProduct(
             @RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String auth,
             @Valid @RequestBody ProductUpsertRequest request) {
-        currentSessionResolver.resolveAuthenticatedUser(auth);
+        adminAccessGuard.requireAdmin(auth);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(catalogApplicationService.createProduct(request));
     }
@@ -44,7 +44,7 @@ public class AdminProductController {
             @RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String auth,
             @PathVariable Long id,
             @Valid @RequestBody ProductUpsertRequest request) {
-        currentSessionResolver.resolveAuthenticatedUser(auth);
+        adminAccessGuard.requireAdmin(auth);
         return catalogApplicationService.updateProduct(id, request);
     }
 
@@ -52,7 +52,7 @@ public class AdminProductController {
     public ResponseEntity<Void> deleteProduct(
             @RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String auth,
             @PathVariable Long id) {
-        currentSessionResolver.resolveAuthenticatedUser(auth);
+        adminAccessGuard.requireAdmin(auth);
         catalogApplicationService.deleteProduct(id);
         return ResponseEntity.noContent().build();
     }

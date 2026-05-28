@@ -1,6 +1,7 @@
 package co.edu.cesde.pps.web.error;
 
 import co.edu.cesde.pps.exception.AuthenticationException;
+import co.edu.cesde.pps.exception.AuthorizationException;
 import co.edu.cesde.pps.exception.CartMergeException;
 import co.edu.cesde.pps.exception.DuplicateEntityException;
 import co.edu.cesde.pps.exception.EntityNotFoundException;
@@ -21,6 +22,7 @@ public class DomainExceptionMapper {
         if (throwable instanceof InvalidCartStateException) return ApiErrorCode.INVALID_CART_STATE;
         if (throwable instanceof CartMergeException) return ApiErrorCode.CART_MERGE_ERROR;
         if (throwable instanceof AuthenticationException) return ApiErrorCode.UNAUTHORIZED;
+        if (throwable instanceof AuthorizationException) return ApiErrorCode.FORBIDDEN;
         return ApiErrorCode.INTERNAL_SERVER_ERROR;
     }
 }
