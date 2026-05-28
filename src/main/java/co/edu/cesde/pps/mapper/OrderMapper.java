@@ -109,6 +109,7 @@ public class OrderMapper {
             dto.setProductId(item.getProduct().getProductId());
             dto.setProductName(item.getProduct().getName());
             dto.setProductSku(item.getProduct().getSku());
+            dto.setProductImageUrl(normalizeImage(item.getProduct().getImage()));
         }
 
         dto.setQuantity(item.getQuantity());
@@ -189,5 +190,12 @@ public class OrderMapper {
         return orders.stream()
                 .map(this::toDTO)
                 .collect(Collectors.toList());
+    }
+
+    private String normalizeImage(String image) {
+        if (image == null || image.isBlank()) {
+            return null;
+        }
+        return image.trim();
     }
 }

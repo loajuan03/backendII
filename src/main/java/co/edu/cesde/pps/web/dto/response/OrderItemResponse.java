@@ -4,11 +4,10 @@ import java.math.BigDecimal;
 
 public record OrderItemResponse(
         Long id,
-        Long orderId,
         Long productId,
+        String sku,
         String productName,
-        String productSku,
-        String productImageUrl,
+        String image,
         Integer quantity,
         BigDecimal unitPrice,
         BigDecimal lineTotal

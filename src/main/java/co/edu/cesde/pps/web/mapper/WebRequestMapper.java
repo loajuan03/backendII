@@ -38,6 +38,7 @@ public class WebRequestMapper {
         dto.setSku(request.sku());
         dto.setName(request.name());
         dto.setDescription(request.description());
+        dto.setImage(request.image());
         dto.setPrice(request.price());
         dto.setStockQty(request.stockQty());
         dto.setIsActive(request.isActive());

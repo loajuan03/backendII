@@ -92,37 +92,37 @@ ON DUPLICATE KEY UPDATE name=VALUES(name);
 -- Datos: products (Ejemplos)
 -- ============================================
 -- Productos de Electronics > Computers
-INSERT INTO products (product_id, category_id, sku, name, description, price, stock_qty, is_active) VALUES
-(1, 11, 'COMP-LAP-001', 'Dell XPS 13 Laptop', 'High-performance ultrabook with Intel i7', 1299.99, 15, TRUE),
-(2, 11, 'COMP-LAP-002', 'MacBook Air M2', 'Apple MacBook Air with M2 chip', 1199.99, 10, TRUE),
-(3, 11, 'COMP-DES-001', 'Gaming Desktop PC', 'High-end gaming desktop with RTX 4080', 2499.99, 5, TRUE)
-ON DUPLICATE KEY UPDATE price=VALUES(price), stock_qty=VALUES(stock_qty);
+INSERT INTO products (product_id, category_id, sku, name, description, image, price, stock_qty, is_active) VALUES
+(1, 11, 'COMP-LAP-001', 'Dell XPS 13 Laptop', 'High-performance ultrabook with Intel i7', 'https://picsum.photos/seed/comp-lap-001/800/600', 1299.99, 15, TRUE),
+(2, 11, 'COMP-LAP-002', 'MacBook Air M2', 'Apple MacBook Air with M2 chip', 'https://picsum.photos/seed/comp-lap-002/800/600', 1199.99, 10, TRUE),
+(3, 11, 'COMP-DES-001', 'Gaming Desktop PC', 'High-end gaming desktop with RTX 4080', 'https://picsum.photos/seed/comp-des-001/800/600', 2499.99, 5, TRUE)
+ON DUPLICATE KEY UPDATE image=VALUES(image), price=VALUES(price), stock_qty=VALUES(stock_qty);
 
 -- Productos de Electronics > Smartphones
-INSERT INTO products (product_id, category_id, sku, name, description, price, stock_qty, is_active) VALUES
-(4, 12, 'PHONE-IP-001', 'iPhone 15 Pro', 'Latest Apple iPhone with A17 chip', 999.99, 20, TRUE),
-(5, 12, 'PHONE-SAM-001', 'Samsung Galaxy S24', 'Flagship Samsung smartphone', 899.99, 25, TRUE),
-(6, 12, 'PHONE-PIX-001', 'Google Pixel 8', 'Google Pixel with advanced AI', 699.99, 15, TRUE)
-ON DUPLICATE KEY UPDATE price=VALUES(price), stock_qty=VALUES(stock_qty);
+INSERT INTO products (product_id, category_id, sku, name, description, image, price, stock_qty, is_active) VALUES
+(4, 12, 'PHONE-IP-001', 'iPhone 15 Pro', 'Latest Apple iPhone with A17 chip', 'https://picsum.photos/seed/phone-ip-001/800/600', 999.99, 20, TRUE),
+(5, 12, 'PHONE-SAM-001', 'Samsung Galaxy S24', 'Flagship Samsung smartphone', 'https://picsum.photos/seed/phone-sam-001/800/600', 899.99, 25, TRUE),
+(6, 12, 'PHONE-PIX-001', 'Google Pixel 8', 'Google Pixel with advanced AI', 'https://picsum.photos/seed/phone-pix-001/800/600', 699.99, 15, TRUE)
+ON DUPLICATE KEY UPDATE image=VALUES(image), price=VALUES(price), stock_qty=VALUES(stock_qty);
 
 -- Productos de Electronics > Audio
-INSERT INTO products (product_id, category_id, sku, name, description, price, stock_qty, is_active) VALUES
-(7, 13, 'AUD-HEAD-001', 'Sony WH-1000XM5', 'Noise-canceling wireless headphones', 399.99, 30, TRUE),
-(8, 13, 'AUD-SPEAK-001', 'JBL Flip 6', 'Portable Bluetooth speaker', 129.99, 50, TRUE)
-ON DUPLICATE KEY UPDATE price=VALUES(price), stock_qty=VALUES(stock_qty);
+INSERT INTO products (product_id, category_id, sku, name, description, image, price, stock_qty, is_active) VALUES
+(7, 13, 'AUD-HEAD-001', 'Sony WH-1000XM5', 'Noise-canceling wireless headphones', 'https://picsum.photos/seed/aud-head-001/800/600', 399.99, 30, TRUE),
+(8, 13, 'AUD-SPEAK-001', 'JBL Flip 6', 'Portable Bluetooth speaker', 'https://picsum.photos/seed/aud-speak-001/800/600', 129.99, 50, TRUE)
+ON DUPLICATE KEY UPDATE image=VALUES(image), price=VALUES(price), stock_qty=VALUES(stock_qty);
 
 -- Productos de Clothing > Men
-INSERT INTO products (product_id, category_id, sku, name, description, price, stock_qty, is_active) VALUES
-(9, 21, 'CLOTH-MEN-001', 'Classic Denim Jeans', 'Comfortable fit denim jeans', 59.99, 100, TRUE),
-(10, 21, 'CLOTH-MEN-002', 'Cotton T-Shirt', 'Basic cotton t-shirt', 19.99, 200, TRUE)
-ON DUPLICATE KEY UPDATE price=VALUES(price), stock_qty=VALUES(stock_qty);
+INSERT INTO products (product_id, category_id, sku, name, description, image, price, stock_qty, is_active) VALUES
+(9, 21, 'CLOTH-MEN-001', 'Classic Denim Jeans', 'Comfortable fit denim jeans', 'https://picsum.photos/seed/cloth-men-001/800/600', 59.99, 100, TRUE),
+(10, 21, 'CLOTH-MEN-002', 'Cotton T-Shirt', 'Basic cotton t-shirt', 'https://picsum.photos/seed/cloth-men-002/800/600', 19.99, 200, TRUE)
+ON DUPLICATE KEY UPDATE image=VALUES(image), price=VALUES(price), stock_qty=VALUES(stock_qty);
 
 -- Productos de Books > Technical
-INSERT INTO products (product_id, category_id, sku, name, description, price, stock_qty, is_active) VALUES
-(11, 33, 'BOOK-TECH-001', 'Clean Code', 'Robert C. Martin - Programming best practices', 44.99, 50, TRUE),
-(12, 33, 'BOOK-TECH-002', 'Design Patterns', 'Gang of Four - Essential design patterns', 54.99, 40, TRUE),
-(13, 33, 'BOOK-TECH-003', 'Java Persistence with Hibernate', 'JPA and Hibernate guide', 49.99, 30, TRUE)
-ON DUPLICATE KEY UPDATE price=VALUES(price), stock_qty=VALUES(stock_qty);
+INSERT INTO products (product_id, category_id, sku, name, description, image, price, stock_qty, is_active) VALUES
+(11, 33, 'BOOK-TECH-001', 'Clean Code', 'Robert C. Martin - Programming best practices', 'https://picsum.photos/seed/book-tech-001/800/600', 44.99, 50, TRUE),
+(12, 33, 'BOOK-TECH-002', 'Design Patterns', 'Gang of Four - Essential design patterns', 'https://picsum.photos/seed/book-tech-002/800/600', 54.99, 40, TRUE),
+(13, 33, 'BOOK-TECH-003', 'Java Persistence with Hibernate', 'JPA and Hibernate guide', 'https://picsum.photos/seed/book-tech-003/800/600', 49.99, 30, TRUE)
+ON DUPLICATE KEY UPDATE image=VALUES(image), price=VALUES(price), stock_qty=VALUES(stock_qty);
 
 -- ============================================
 -- Datos: users (Ejemplos para testing)

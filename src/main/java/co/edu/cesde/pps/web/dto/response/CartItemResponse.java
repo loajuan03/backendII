@@ -5,16 +5,15 @@ import java.time.LocalDateTime;
 
 public record CartItemResponse(
         Long id,
-        Long cartId,
         Long productId,
-        String productName,
-        String productSku,
-        String productImageUrl,
+        String sku,
+        String name,
+        String image,
         Integer quantity,
         BigDecimal unitPrice,
-        BigDecimal subtotal,
-        LocalDateTime addedAt,
+        BigDecimal lineTotal,
         Boolean productAvailable,
-        Integer productStock
+        Integer productStock,
+        LocalDateTime addedAt
 ) {
 }

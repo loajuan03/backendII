@@ -43,6 +43,7 @@ public class ProductService {
         Product product = productMapper.toEntity(productDTO);
         product.setProductId(null);
         product.setCategory(category);
+        product.setImage(normalizeImage(productDTO.getImage()));
         product.setIsActive(productDTO.getIsActive() != null ? productDTO.getIsActive() : true);
         product.setCreatedAt(LocalDateTime.now());
 
@@ -61,6 +62,7 @@ public class ProductService {
         product.setSku(productDTO.getSku().trim());
         product.setName(productDTO.getName().trim());
         product.setDescription(productDTO.getDescription());
+        product.setImage(normalizeImage(productDTO.getImage()));
         product.setPrice(productDTO.getPrice());
         product.setStockQty(productDTO.getStockQty());
         product.setIsActive(productDTO.getIsActive() != null ? productDTO.getIsActive() : product.getIsActive());
@@ -172,5 +174,14 @@ public class ProductService {
         ValidationUtils.validateNonNegative(productDTO.getPrice(), "price");
         ValidationUtils.validateNotNull(productDTO.getStockQty(), "stockQty");
         ValidationUtils.validateNonNegative(productDTO.getStockQty(), "stockQty");
+    }
+
+    private String normalizeImage(String image) {
+        if (image == null || image.isBlank()) {
+            return null;
+        }
+        String normalizedImage = image.trim();
+        ValidationUtils.validateMaxLength(normalizedImage, 1000, "image");
+        return normalizedImage;
     }
 }

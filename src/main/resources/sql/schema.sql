@@ -119,6 +119,7 @@ CREATE TABLE IF NOT EXISTS products (
     sku VARCHAR(50) NOT NULL UNIQUE,
     name VARCHAR(255) NOT NULL,
     description TEXT,
+    image VARCHAR(1000),
     price DECIMAL(10, 2) NOT NULL,
     stock_qty INT NOT NULL DEFAULT 0,
     is_active BOOLEAN DEFAULT TRUE,

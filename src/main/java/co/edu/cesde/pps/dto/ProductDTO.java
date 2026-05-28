@@ -21,6 +21,7 @@ public class ProductDTO {
     private String sku;
     private String name;
     private String description;
+    private String image;
     private BigDecimal price;
     private Integer stockQty;
     private Boolean isActive;
@@ -34,14 +35,15 @@ public class ProductDTO {
 
     // Constructor completo
     public ProductDTO(Long productId, Long categoryId, String categoryName, String sku,
-                      String name, String description, BigDecimal price, Integer stockQty,
-                      Boolean isActive, LocalDateTime createdAt) {
+                      String name, String description, String image, BigDecimal price,
+                      Integer stockQty, Boolean isActive, LocalDateTime createdAt) {
         this.productId = productId;
         this.categoryId = categoryId;
         this.categoryName = categoryName;
         this.sku = sku;
         this.name = name;
         this.description = description;
+        this.image = image;
         this.price = price;
         this.stockQty = stockQty;
         this.isActive = isActive;
@@ -97,6 +99,14 @@ public class ProductDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public BigDecimal getPrice() {

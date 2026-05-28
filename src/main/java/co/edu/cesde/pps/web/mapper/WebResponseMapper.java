@@ -54,6 +54,7 @@ public class WebResponseMapper {
                 dto.getSku(),
                 dto.getName(),
                 dto.getDescription(),
+                dto.getImage(),
                 dto.getPrice(),
                 dto.getStockQty(),
                 dto.getIsActive(),
@@ -136,17 +137,16 @@ public class WebResponseMapper {
         }
         return new CartItemResponse(
                 dto.getCartItemId(),
-                dto.getCartId(),
                 dto.getProductId(),
-                dto.getProductName(),
                 dto.getProductSku(),
+                dto.getProductName(),
                 dto.getProductImageUrl(),
                 dto.getQuantity(),
                 dto.getUnitPrice(),
                 dto.getSubtotal(),
-                dto.getAddedAt(),
                 dto.getProductAvailable(),
-                dto.getProductStock());
+                dto.getProductStock(),
+                dto.getAddedAt());
     }
 
     public OrderResponse toOrderResponse(OrderDTO dto) {
@@ -184,10 +184,9 @@ public class WebResponseMapper {
         }
         return new OrderItemResponse(
                 dto.getOrderItemId(),
-                dto.getOrderId(),
                 dto.getProductId(),
-                dto.getProductName(),
                 dto.getProductSku(),
+                dto.getProductName(),
                 dto.getProductImageUrl(),
                 dto.getQuantity(),
                 dto.getUnitPrice(),
