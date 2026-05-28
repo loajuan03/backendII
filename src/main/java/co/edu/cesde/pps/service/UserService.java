@@ -58,6 +58,7 @@ public class UserService {
      * @return UserDTO del usuario creado
      * @throws DuplicateEntityException si el email ya existe
      */
+    @Transactional
     public UserDTO registerUser(String email, String passwordHash, String firstName,
                                 String lastName, String phone) {
         // Validaciones
@@ -78,7 +79,7 @@ public class UserService {
 
         // Crear usuario
 
-        Role defaultRole = (Role) RoleRepository.findByNameIgnoreCase("CUSTOMER")
+        Role defaultRole = roleRepository.findByNameIgnoreCase("CUSTOMER")
                 .orElseThrow(() -> new EntityNotFoundException("Role", "CUSTOMER"));
 
         User user = User.builder()

@@ -1,9 +1,6 @@
 package co.edu.cesde.pps.controller;
 
 import co.edu.cesde.pps.dto.ProductDTO;
-import co.edu.cesde.pps.exception.DuplicateEntityException;
-import co.edu.cesde.pps.exception.EntityNotFoundException;
-import co.edu.cesde.pps.exception.ValidationException;
 import co.edu.cesde.pps.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -146,19 +143,5 @@ public class ProductController {
             @PathVariable Long id,
             @RequestParam Integer quantity) {
         return ResponseEntity.ok(productService.checkAvailability(id, quantity));
-    }
-
-    @org.springframework.web.bind.annotation.ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<String> handleEntityNotFound(EntityNotFoundException e) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-    }
-
-    @org.springframework.web.bind.annotation.ExceptionHandler({
-            DuplicateEntityException.class,
-            ValidationException.class,
-            IllegalArgumentException.class
-    })
-    public ResponseEntity<String> handleBadRequest(RuntimeException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 }
