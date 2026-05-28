@@ -133,6 +133,73 @@ public class UserService {
         return userMapper.toDTOList(userRepository.findAll());
     }
 
+    @Transactional
+    public UserDTO createAdminUser(String email, String passwordHash, String firstName,
+                                   String lastName, String phone, String roleName, UserStatus status) {
+        ValidationUtils.validateEmail(email, "email");
+        ValidationUtils.validateNotBlank(passwordHash, "passwordHash");
+        ValidationUtils.validateNotBlank(firstName, "firstName");
+        ValidationUtils.validateNotBlank(lastName, "lastName");
+        ValidationUtils.validateNotBlank(roleName, "role");
+        ValidationUtils.validateNotNull(status, "status");
+
+        if (phone != null && !phone.isBlank()) {
+            ValidationUtils.validatePhone(phone, "phone");
+        }
+
+        if (existsByEmail(email)) {
+            throw new DuplicateEntityException("User", "email", email);
+        }
+
+        Role role = roleRepository.findByNameIgnoreCase(roleName)
+                .orElseThrow(() -> new EntityNotFoundException("Role", roleName));
+
+        User user = User.builder()
+                .role(role)
+                .email(email.toLowerCase().trim())
+                .passwordHash(passwordHash)
+                .firstName(firstName.trim())
+                .lastName(lastName.trim())
+                .phone(phone != null ? phone.trim() : null)
+                .status(status)
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        return userMapper.toDTO(userRepository.save(user));
+    }
+
+    @Transactional
+    public UserDTO updateAdminUser(Long userId, String email, String firstName,
+                                   String lastName, String phone, String roleName, UserStatus status) {
+        User user = findUserEntityOrThrow(userId);
+
+        ValidationUtils.validateEmail(email, "email");
+        ValidationUtils.validateNotBlank(firstName, "firstName");
+        ValidationUtils.validateNotBlank(lastName, "lastName");
+        ValidationUtils.validateNotBlank(roleName, "role");
+        ValidationUtils.validateNotNull(status, "status");
+
+        if (phone != null && !phone.isBlank()) {
+            ValidationUtils.validatePhone(phone, "phone");
+        }
+
+        if (!user.getEmail().equalsIgnoreCase(email) && existsByEmail(email)) {
+            throw new DuplicateEntityException("User", "email", email);
+        }
+
+        Role role = roleRepository.findByNameIgnoreCase(roleName)
+                .orElseThrow(() -> new EntityNotFoundException("Role", roleName));
+
+        user.setEmail(email.toLowerCase().trim());
+        user.setFirstName(firstName.trim());
+        user.setLastName(lastName.trim());
+        user.setPhone(phone != null && !phone.isBlank() ? phone.trim() : null);
+        user.setRole(role);
+        user.setStatus(status);
+
+        return userMapper.toDTO(userRepository.save(user));
+    }
+
     /**
      * Actualiza perfil de usuario.
      *
@@ -189,7 +256,7 @@ public class UserService {
     public void deleteUser(Long userId) {
         User user = findUserEntityOrThrow(userId);
         user.setStatus(UserStatus.INACTIVE);
-        // TODO Etapa 06: userRepository.save(user);
+        userRepository.save(user);
     }
 
     /**

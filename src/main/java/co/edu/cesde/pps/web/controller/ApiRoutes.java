@@ -10,6 +10,7 @@ public final class ApiRoutes {
     public static final String CART = API_V1 + "/cart";
     public static final String ORDERS = API_V1 + "/orders";
     public static final String ADMIN_PRODUCTS = API_V1 + "/admin/products";
+    public static final String ADMIN_USERS = API_V1 + "/admin/users";
 
     private ApiRoutes() {
     }

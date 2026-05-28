@@ -39,6 +39,10 @@ public class WebResponseMapper {
                 dto.getStatus() != null ? dto.getStatus().name() : null);
     }
 
+    public List<UserResponse> toUserResponseList(List<UserDTO> dtos) {
+        return dtos.stream().map(this::toUserResponse).toList();
+    }
+
     public ProductResponse toProductResponse(ProductDTO dto) {
         if (dto == null) {
             return null;
