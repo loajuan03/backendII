@@ -143,6 +143,7 @@ public class UserService {
      * @return UserDTO actualizado
      * @throws EntityNotFoundException si no existe
      */
+    @Transactional
     public UserDTO updateProfile(Long userId, String firstName, String lastName, String phone) {
         User user = findUserEntityOrThrow(userId);
 
@@ -166,9 +167,16 @@ public class UserService {
             }
         }
 
-        // TODO Etapa 06: userRepository.save(user);
+        user = userRepository.save(user);
 
         return userMapper.toDTO(user);
+    }
+
+    @Transactional
+    public void updatePasswordHash(Long userId, String newHash) {
+        User user = findUserEntityOrThrow(userId);
+        user.setPasswordHash(newHash);
+        userRepository.save(user);
     }
 
     /**
