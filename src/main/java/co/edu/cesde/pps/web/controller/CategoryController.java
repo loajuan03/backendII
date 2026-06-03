@@ -2,15 +2,13 @@ package co.edu.cesde.pps.web.controller;
 
 import co.edu.cesde.pps.application.CatalogApplicationService;
 import co.edu.cesde.pps.web.dto.response.CategoryResponse;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping(ApiRoutes.CATEGORIES)
+@CrossOrigin(origins = "http://localhost:5173")
 public class CategoryController {
 
     private final CatalogApplicationService catalogApplicationService;
